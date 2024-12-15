@@ -1,0 +1,67 @@
+services:
+  # MySQL Database Service
+  db_user:
+    image: mysql:8
+    container_name: db_user-container
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: userdb
+    ports:
+      - "3306:3306"
+    networks:
+      - network_for_lyra
+    volumes:
+      - db_data:/var/lib/mysql 
+
+  # Elasticsearch Service
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.0
+    container_name: elasticsearch-container_demo
+    ports:
+      - "9200:9200"    
+    networks:
+      - network_for_lyra
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -u ${ELASTIC_USERNAME}:${ELASTIC_PASSWORD} -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5 
+
+  # Spring Boot Application
+  lyra_backend:
+    build:
+      context: .       
+    image: lyra_backend 
+    container_name: lyra_backend_app_container
+    ports:
+      - "8080:8080"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      db_user:
+        condition: service_started
+    environment:
+      - SPRING_ELASTICSEARCH_URIS=elasticsearch:9200 
+      - SPRING_ELASTICSEARCH_USERNAME=${ELASTIC_USERNAME}
+      - SPRING_ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db_user:3306/userdb
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
+      - SPRING_SECURITY_USER_NAME=${SPRING_USERNAME}
+      - SPRING_SECURITY_USER_PASSWORD=${SPRING_PASSWORD}
+    networks:
+      - network_for_lyra
+
+networks:
+  network_for_lyra:
+    driver: bridge
+
+volumes:
+  db_data: 
+  es_data:  # Elasticsearch data volume
