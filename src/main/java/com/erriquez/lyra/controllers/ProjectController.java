@@ -2,6 +2,7 @@ package com.erriquez.lyra.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.erriquez.lyra.models.Project;
@@ -20,13 +21,15 @@ public class ProjectController {
     public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/addProject")
     public ResponseEntity<Project> addProject(@RequestBody Project project){
         Project newProject= projectService.addProject(project);
         return new ResponseEntity<>(newProject, HttpStatus.CREATED);
     }
 
-
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TICKET_MANAGER')")
     @GetMapping("/all")
     public ResponseEntity<List<Project>> getAllProjects () {
         List<Project> projects = projectService.findAllProjects();
@@ -38,7 +41,7 @@ public class ProjectController {
         long totalProjects = projectService.count();
         return new ResponseEntity<>(totalProjects, HttpStatus.OK);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/totalProjects")
     public ResponseEntity<?> getTotalProjects () {
         Long totalProjects = projectService.getTotalProjects();
@@ -51,16 +54,19 @@ public class ProjectController {
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteProject(@PathVariable("id") Long id) {
         projectService.deleteProject(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TICKET_MANAGER')")
     @PutMapping("/update/{id}")
     public ResponseEntity<Project> patchProject(@PathVariable("id") Long id, @RequestBody Project project){
+        
         Optional<Project> optionalProject= projectService.findProjectById(id);
+
         if (optionalProject.isPresent()) {
             Project p = optionalProject.get();
             if (project.getCode() != null)

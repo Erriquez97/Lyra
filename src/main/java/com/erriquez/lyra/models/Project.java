@@ -8,9 +8,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 
-
+@Data
 @Entity
 @Table(name = "projects")
 public class Project {
@@ -39,11 +40,11 @@ public class Project {
     @Column(name = "token", length = 10)
     private String token;
 
-    @NotBlank
+    // @NotBlank
     @Column(name = "total_reports")
     private Integer totalReports;
 
-    @NotBlank
+    // @NotBlank
     @Column(name = "open_reports")
     private Integer openReports;
 
@@ -61,60 +62,4 @@ public class Project {
         this.openReports = openReports;
     }
 
-    // Getters and setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSupervisor() {
-        return supervisor;
-    }
-
-    public void setSupervisor(String supervisor) {
-        this.supervisor = supervisor;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public Integer getTotalReports() {
-        return totalReports;
-    }
-
-    public void setTotalReports(Integer totalReports) {
-        this.totalReports = totalReports;
-    }
-
-    public Integer getOpenReports() {
-        return openReports;
-    }
-
-    public void setOpenReports(Integer openReports) {
-        this.openReports = openReports;
-    }
 }

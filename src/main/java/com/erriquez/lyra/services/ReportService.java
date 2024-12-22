@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.erriquez.lyra.models.Project;
 import com.erriquez.lyra.models.Report;
+import com.erriquez.lyra.models.ReportStatus;
 import com.erriquez.lyra.repositories.ReportRepository;
 
 import java.time.LocalDateTime;
@@ -28,27 +29,23 @@ public class ReportService {
         this.projectService = projectService;
     }
 
-    // Create a date less the specified number of months
     public LocalDateTime createDateLessMonths(int months) {
         return LocalDateTime.now().minusMonths(months);
     }
 
     public Report addReport(Report report) {
         report.setRegistrationDate(LocalDateTime.now());
-        report.setStatus("Aperto");
+        report.setStatus(ReportStatus.OPEN);
         report.setId(UUID.randomUUID().toString());
 
-        if (report.getProject().equalsIgnoreCase("International") || 
-            report.getProject().equalsIgnoreCase("Lyra") || 
-            report.getProject().equalsIgnoreCase("Larine")) {
-            Optional<Project> optionalProject = projectService.findProjectByName(report.getProject());
+        Optional<Project> optionalProject = projectService.findProjectByName(report.getProject());
             if (optionalProject.isPresent()) {
                 Project project = optionalProject.get();
                 project.setTotalReports(project.getTotalReports() + 1);
                 project.setOpenReports(project.getOpenReports() + 1);
                 projectService.updateProject(project);
             }
-        }
+        
         return reportRepository.save(report);
     }
 
@@ -60,7 +57,7 @@ public class ReportService {
         return reportRepository.count();
     }
 
-    public long countReportsByStatus(String status) {
+    public long countReportsByStatus(ReportStatus status) {
         return reportRepository.countReportsByStatus(status);
     }
 
@@ -88,19 +85,20 @@ public class ReportService {
         return counts;
     }
 
-    public long[] countReportsByCategory(String category1, String category2, String category3, String category4) {
-        return new long[]{
-            reportRepository.countReportsByCategory(category1),
-            reportRepository.countReportsByCategory(category2),
-            reportRepository.countReportsByCategory(category3),
-            reportRepository.countReportsByCategory(category4)
-        };
+    public long[] countReportsByCategories(String[] categories) {
+
+        long[] count = new long[categories.length];
+        for(int i =0; i< categories.length;i++){
+            count[i]= reportRepository.countReportsByCategory(categories[i]);
+        }
+
+        return count;
     }
 
     public Report updateReport(Report report) {
-        if (!"Chiuso".equalsIgnoreCase(report.getStatus())) {
+        if (report.getStatus()== ReportStatus.OPEN) {
             report.setClosingDate(LocalDateTime.now());
-            report.setStatus("Chiuso");
+            report.setStatus(ReportStatus.CLOSED);
 
             Optional<Project> optionalProject = projectService.findProjectByName(report.getProject());
             if (optionalProject.isPresent()) {

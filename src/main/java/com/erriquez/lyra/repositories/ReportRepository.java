@@ -1,6 +1,8 @@
 package com.erriquez.lyra.repositories;
 
 import com.erriquez.lyra.models.Report;
+import com.erriquez.lyra.models.ReportStatus;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,7 +21,7 @@ public interface ReportRepository extends ElasticsearchRepository< Report, Strin
     void deleteReportById(String id);
     long count();
 
-    long countReportsByStatus(String status);
+    long countReportsByStatus(ReportStatus status);
 
     long countReportsByCategory(String category);
 

@@ -1,5 +1,6 @@
 package com.erriquez.lyra.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,8 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.erriquez.lyra.models.User;
-
-
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -28,5 +27,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "SELECT COUNT(id) FROM users", nativeQuery = true)
     Integer totalUsers();
+
+    List<User> findAll();
 
 }
