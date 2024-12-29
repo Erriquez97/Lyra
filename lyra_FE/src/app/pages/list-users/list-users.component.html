@@ -1,0 +1,129 @@
+<p-sidebar [(visible)]="visibleSidebar1">
+    <h1 id="prova">a</h1>
+    <div class="side-buttons">
+      <button pButton pRipple type="button" routerLink="/dashboard" (click)="visibleSidebar1 = false" label="DASHBOARD" class="p-button-raised"></button>
+      @if (isAdmin) {
+        <button  pButton pRipple type="button" routerLink="/users" (click)="visibleSidebar1 = false" label="UTENTI" class="p-button-raised"></button>
+      }
+      @if (isManager) {
+        <button  pButton pRipple type="button" routerLink="/users" (click)="visibleSidebar1 = false" label="PROFILO" class="p-button-raised"></button>
+      }
+      <button pButton pRipple type="button"  routerLink="/projects"  (click)="visibleSidebar1 = false" label="PROGETTI" class="p-button-raised"></button>
+      <button pButton pRipple type="button"  (click)="visibleSidebar1 = false; openAllReportsFunction();" label="TICKETS" class="p-button-raised"></button>
+      <button pButton pRipple id="button-logout" type="button" (click)="visibleSidebar1 = false; signOut();" label="LOGOUT" class="p-button-raised"></button>
+    </div>
+  </p-sidebar>
+  <p-toolbar id="toolbar">
+    <div class="p-toolbar-group-left">
+      <p-button type="button" (click)="visibleSidebar1 = true" id="bottone-linee" icon="pi pi-bars"></p-button>
+      <div id="name-page">Utenti</div>
+    </div>
+  </p-toolbar>
+
+  <div class="p-fluid">
+    <button id="openModalButton" [hidden]="true">Open Modal</button>
+    <div class="users-table">
+      <p-table [columns]="colsUsers"  [value]="users" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedUser" (onRowSelect)="selected()" styleClass="p-datatable-responsive-demo">
+        <ng-template pTemplate="caption">Utenti</ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            @for (col of colsUsers; track col) {
+              <th>
+                {{col.header}}
+              </th>
+            }
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns" >
+          <tr [pSelectableRow]="rowData">
+            @for (col of colsUsers; track col) {
+              <td>
+                <span class="p-column-title">{{col.header}}</span>
+                {{rowData[col.field]}}
+              </td>
+            }
+          </tr>
+        </ng-template>
+        @if (isAdmin) {
+          <ng-template pTemplate="paginatorleft">
+            <p-button data-bs-toggle="modal" data-bs-target="#addUserModal" type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+          </ng-template>
+        }
+      </p-table>
+    </div>
+  </div>
+
+  <!-- MODAL ADD USER-->
+  <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Nuovo utente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form #addUserForm="ngForm" (ngSubmit)="onAddUser(addUserForm)" class="form-group" >
+            <div class="p-field">
+              <p-dropdown class="form-control" id="dropDown-category" name="category" [options]="categories" [(ngModel)]="selectedCategory" placeholder="Seleziona ruolo utente" optionValue="category" optionLabel="category" [showClear]="true" required></p-dropdown>
+            </div>
+            <!--- <div class="p-field">
+            <p-multiSelect class="form-control" [options]="projects" [(ngModel)]="selectedProject1" name="projectsAssigned" optionValue="name" defaultLabel="Seleziona progetti" optionLabel="name" selectedItemsLabel="{0} progetti selezionati"></p-multiSelect>
+          </div> -->
+          <div class="p-field">
+            <input type="email" pInputText ngModel name="email" pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*" class="form-control" id="email" placeholder="Email" required>
+          </div>
+          <div class="p-field">
+            <input type="text" pInputText ngModel name="username" class="form-control" placeholder="username" required>
+          </div>
+          <div class="p-field">
+            <input type="password" pInputText ngModel name="password" class="form-control" placeholder="***********" required>
+          </div>
+          <div class="p-field">
+            <textarea  type="text" rows="5" ngModel name="bio" class="form-control" id="bio" pInputTextarea placeholder="Bio..."></textarea>
+          </div>
+          <div class="modal-footer">
+            <button pButton  pRipple data-bs-dismiss="modal" (click)="reset(addUserForm)" label="Annulla" id="btn-annulla" class="p-button-rounded"></button>
+            <button id="btn-confirm" [disabled]="addUserForm.invalid"  type="submit" pButton pRipple label="Crea Utente"  class="p-button-rounded" ></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END ADD USER-->
+
+<!-- Modal Confirm -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <i class="pi pi-check"></i>
+        <div class="text-confirm-modal">
+          <h3>Utente creato con successo</h3>
+        </div>
+      </div>
+      <div class="modal-footer" id="footer-confirm">
+        <button (click)="refresh()" pButton pRipple data-bs-dismiss="modal" label="Ok" class="p-button-rounded"></button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END Modal Confirm -->
+
+<!-- Modal error -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <i class="pi pi-exclamation-circle"></i>
+        <div class="text-confirm-modal">
+          <h3>Errore, utente non creato, riprova più tardi</h3>
+        </div>
+      </div>
+      <div class="modal-footer" id="footer-confirm">
+        <button (click)="refresh()" pButton pRipple data-bs-dismiss="modal" label="Ok" class="p-button-rounded"></button>
+      </div>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>

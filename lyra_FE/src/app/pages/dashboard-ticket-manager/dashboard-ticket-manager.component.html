@@ -1,0 +1,45 @@
+<p-sidebar [(visible)]="visibleSidebar1" >
+    <h1 id="prova">a</h1>
+      <div class="side-buttons">
+        <button pButton pRipple type="button" routerLink="/dashTicketManager" (click)="visibleSidebar1 = false" label="DASHBOARD" class="p-button-raised"></button>
+        <button pButton pRipple type="button" (click)="visibleSidebar1 = false; openProfile()" label="PROFILO" class="p-button-raised"></button>
+        <button pButton pRipple type="button"  routerLink="/projects"  (click)="visibleSidebar1 = false" label="PROGETTI" class="p-button-raised"></button>
+        <button pButton pRipple type="button"  (click)="visibleSidebar1 = false; openAllReportsFunction();" label="TICKETS" class="p-button-raised"></button>
+        <button pButton pRipple id="button-logout" type="button" (click)="visibleSidebar1 = false; signOut();" label="LOGOUT" class="p-button-raised"></button>
+      </div>
+  </p-sidebar>
+  <p-toolbar id="toolbar">
+    <div class="p-toolbar-group-left">
+      <p-button type="button" (click)="visibleSidebar1 = true" id="bottone-linee" icon="pi pi-bars"></p-button>
+      <span id="name-page">DASHBOARD</span>
+    </div>
+    <div class="p-toolbar-group-right">
+       <div id="last-update">Ultimo aggiornamento: {{currentDate}}</div>
+    </div>
+  </p-toolbar>
+  <div class="p-fluid">
+      <div class="first-container">
+          <div (click)="openAllReportsFunction();" class="number-bugs-reported">
+              <div class="image-bug-reported"></div>
+              <h4>TICKET SEGNALATI</h4>
+              <h1 id="link-to-tickets">{{totalReports}}</h1>
+          </div>
+          <div class="card">
+              <div class="chart">
+                  <p-chart type="bar"height="100%" width="100%" [data]="last7days" [options]="options"></p-chart>
+              </div>
+          </div> 
+      </div>
+  <div class="second-container">
+      <div class="card">
+          <div class="chart">
+          <p-chart class="grafico" type="doughnut" height="100%" width="100%" [data]="data"></p-chart>
+          </div>
+      </div>
+      <div class="card">
+          <div class="chart">
+          <p-chart type="bar" height="100%" width="100%"[data]="basicData"></p-chart>
+      </div>
+          </div>
+      </div>
+  </div>

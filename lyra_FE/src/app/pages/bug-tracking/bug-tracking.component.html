@@ -1,0 +1,138 @@
+<p-sidebar [(visible)]="visibleSidebar1" >
+    <h1 id="prova">a</h1>
+    <div class="side-buttons">
+      <button pButton pRipple type="button"(click)="visibleSidebar1 = false; openDashboard();" label="DASHBOARD" class="p-button-raised"></button>
+      @if (isAdmin) {
+        <button  pButton pRipple type="button" routerLink="/users" (click)="visibleSidebar1 = false" label="UTENTI" class="p-button-raised"></button>
+      }
+      @if (isManager) {
+        <button  pButton pRipple type="button" (click)="visibleSidebar1 = false; openProfile()" label="PROFILO" class="p-button-raised"></button>
+      }
+      <button pButton pRipple type="button"  routerLink="/projects"  (click)="visibleSidebar1 = false" label="PROGETTI" class="p-button-raised"></button>
+      <button pButton pRipple type="button" (click)="visibleSidebar1 = false; openAllReportsFunction();" label="TICKETS" class="p-button-raised"></button>
+      <button pButton pRipple id="button-logout" type="button" (click)="visibleSidebar1 = false; signOut();" label="LOGOUT" class="p-button-raised"></button>
+    </div>
+  </p-sidebar>
+
+  <p-toolbar id="toolbar">
+    <div class="p-toolbar-group-left">
+      <p-button type="button" (click)="visibleSidebar1 = true" id="bottone-linee" icon="pi pi-bars"></p-button>
+      <span id="name-page">Tickets</span>
+    </div>
+  </p-toolbar>
+
+  <div class="p-fluid" id="p-fluid">
+    <button id="openModalButton" [hidden]="true">Open Modal</button>
+    <div class="bottone-scelta">
+      <p-dropdown id="dropDown-status" name="status" (click)="cliccato()" [options]="categories" [(ngModel)]="selectedStatus" placeholder="Seleziona uno status" optionValue="category" optionLabel="category" [showClear]="true"></p-dropdown>
+    </div>
+
+    <div class="table-reports">
+      <p-table class="some-custom-class-name"  [columns]="colsReports"  [value]="reports" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedReport" (onRowSelect)="selected()" styleClass="p-datatable-responsive-demo">
+        <ng-template pTemplate="caption">Tickets</ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            @for (col of colsReports; track col) {
+              <th>
+                {{col.header}}
+              </th>
+            }
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns" >
+          <tr [pSelectableRow]="rowData">
+            @for (col of colsReports; track col) {
+              <td>
+                <span class="p-column-title">{{col.header}}</span>
+                {{rowData[col.field]}}
+              </td>
+            }
+          </tr>
+        </ng-template>
+        @if (isManager) {
+          <ng-template pTemplate="paginatorleft">
+            <p-button  data-bs-toggle="modal" data-bs-target="#addReportModal" type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+          </ng-template>
+        }
+      </p-table>
+    </div>
+  </div>
+
+  <!-- MODAL ADD REPORT-->
+  <div class="modal fade" id="addReportModal" tabindex="-1" aria-labelledby="addReportLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Nuovo ticket</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form #addReportForm="ngForm" (ngSubmit)="onAddReport(addReportForm)" class="form-group" >
+            <div class="p-field">
+              <label class="text-label" for="email">Email:</label>
+              <input type="email" pInputText ngModel name="email" pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*" class="form-control" id="email" placeholder="example@datasound.it" required>
+            </div>
+            <div class="p-field">
+              <p-dropdown class="form-control" id="dropDown-projects" name="project" [options]="projects" [(ngModel)]="selectedProject1" optionValue="name" placeholder="Seleziona un progetto" optionLabel="name" [showClear]="true" required ></p-dropdown>
+            </div>
+            <div class="p-field">
+              <p-dropdown class="form-control" id="dropDown-category" name="category" [options]="categoriesReport" [(ngModel)]="selectedCategory" placeholder="Seleziona una categoria" optionValue="category" optionLabel="category" [showClear]="true" required></p-dropdown>
+            </div>
+            <div class="p-field">
+              <label class="text-label" for="title">Dove hai trovato il problema?</label>
+              <input type="text"  pInputText ngModel name="title"  class="form-control" id="title" placeholder="esempio nella ending page..." required>
+            </div>
+            <div class="p-field">
+              <label class="text-label" for="description">Descrizione</label>
+              <textarea  type="text" rows="5" ngModel name="description" class="form-control" id="description" pInputTextarea placeholder="Esempio problema riguardo..." required></textarea>
+            </div>
+            <div class="input-group mb-3">
+              <label for="file"class="text-form">Hai uno screenshot?</label>
+              <input #myInput type="file" ngModel name="file" class="form-control" id="file"  (change)="onFileSelect($event)"  accept="image/*">
+            </div>
+            <div class="modal-footer">
+              <button pButton  pRipple data-bs-dismiss="modal" (click)="reset(addReportForm)" label="Annulla" id="btn-annulla" class="p-button-rounded"></button>
+              <button id="btn-confirm" [disabled]="addReportForm.invalid"  type="submit" pButton pRipple label="Conferma"  class="p-button-rounded" ></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END ADD REPORT-->
+
+  <!-- Modal Confirm -->
+  <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <i class="pi pi-check"></i>
+          <div class="text-confirm-modal">
+            <h3>Ticket inviato con successo</h3>
+          </div>
+        </div>
+        <div class="modal-footer" id="footer-confirm">
+          <button (click)="refresh()" pButton pRipple data-bs-dismiss="modal" label="Ok" class="p-button-rounded"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END Modal Confirm -->
+
+  <!-- Modal error -->
+  <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <i class="pi pi-exclamation-circle"></i>
+          <div class="text-confirm-modal">
+            <h3>Errore, Ticket non inviato, riprova più tardi</h3>
+          </div>
+        </div>
+        <div class="modal-footer" id="footer-confirm">
+          <button (click)="refresh()" pButton pRipple data-bs-dismiss="modal" label="Ok" class="p-button-rounded"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END Modal error -->

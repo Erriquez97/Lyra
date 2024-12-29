@@ -1,0 +1,199 @@
+<p-sidebar [(visible)]="visibleSidebar1">
+    <h1 id="prova">a</h1>
+    <div class="side-buttons">
+      <button pButton pRipple type="button" (click)="visibleSidebar1 = false; openDashboard();" label="DASHBOARD" class="p-button-raised"></button>
+      @if (isAdmin) {
+        <button  pButton pRipple type="button" routerLink="/users" (click)="visibleSidebar1 = false" label="UTENTI" class="p-button-raised"></button>
+      }
+      @if (isManager) {
+        <button  pButton pRipple type="button" (click)="visibleSidebar1 = false; openProfile()" label="PROFILO" class="p-button-raised"></button>
+      }
+      <button pButton pRipple type="button"  routerLink="/projects" (click)="visibleSidebar1 = false" label="PROGETTI" class="p-button-raised"></button>
+      <button pButton pRipple type="button" (click)="visibleSidebar1 = false; openAllReportsFunction();" label="TICKETS" class="p-button-raised"></button>
+      <button pButton pRipple id="button-logout" type="button" (click)="visibleSidebar1 = false; signOut();" label="LOGOUT" class="p-button-raised"></button>
+    </div>
+  </p-sidebar>
+  <p-toolbar id="toolbar">
+    <div class="p-toolbar-group-left">
+      <p-button type="button" (click)="visibleSidebar1 = true" id="bottone-linee" icon="pi pi-bars"></p-button>
+      <div id="name-page">PROFILO-{{user.username}}</div>
+    </div>
+  </p-toolbar>
+
+  <div class="p-fluid">
+    <button id="openModalButton" [hidden]="true">Open Modal</button>
+    <div class="user-profile">
+      <div class="image-users"></div>
+      <h3 id="name-user"> #{{user.id}} {{user.username}}</h3>
+    </div>
+    <div class="user-description">
+      <div class="description-part">
+        <div class="section">
+          <div class="introduction">
+            <i class="pi pi-id-card"></i>
+            <h2 class="section-text">Bio</h2>
+          </div>
+          <h2 class="section-answer">{{user.bio}}</h2>
+        </div>
+        <!--<div class="section">
+        <div class="introduction">
+          <i class="pi pi-list"></i>
+          <h2 class="section-text">Progetti assegnati</h2>
+        </div>
+        <h2 class="section-answer">{{user?.projectsAssigned}}</h2>
+      </div>  -->
+      <div class="section">
+        <div class="introduction">
+          <i class="pi pi-calendar"></i>
+          <h2 class="section-text">Data registrazione</h2>
+        </div>
+        <h2 class="section-answer">{{user.registrationDate}}</h2>
+      </div>
+      <div class="section">
+        <div class="introduction">
+          <i class="pi pi-envelope"></i>
+          <h2 class="section-text">Email</h2>
+        </div>
+        <h2 class="section-answer">{{user.email}}</h2>
+      </div>
+    </div>
+    @if (canEditProfile || isAdmin) {
+      <div class="update-part">
+        <button pButton pRipple type="button" (click)="modifyProfile()" label="Aggiorna profilo" class="p-button-rounded update-buttons"></button>
+        @if (canEditProfile && isManager) {
+          <button pButton pRipple type="button" data-bs-toggle="modal" data-bs-target="#changePasswordModal" label="Cambia password" class="p-button-rounded update-buttons"></button>
+        }
+        @if (isAdmin) {
+          <button pButton pRipple type="button" data-bs-toggle="modal" data-bs-target="#resetPasswordModal" label="Reset password" class="p-button-rounded update-buttons"></button>
+        }
+        <button pButton pRipple type="button"  data-bs-toggle="modal" data-bs-target="#deleteModal" label="Elimina" class="p-button-rounded p-button-danger update-buttons"></button>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- MODAL CHANGE PASSWORD-->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordlLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Reset password</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #changePasswordForm="ngForm" class="form-group" (ngSubmit)="onChangePassword(changePasswordForm)">
+          <div class="p-field">
+            <label class="text-label" for="old-password">Vecchia password</label>
+            <input type="password" pInputText [(ngModel)]="form.oldPassword"  name="oldPassword" aria-describedby="username1-help" class="form-control"  placeholder="********" required>
+          </div>
+          <div class="p-field">
+            <label class="text-label" for="new-password">Nuova password (almeno 8 caratteri)</label>
+            <input type="password" minlength="8"  pInputText [(ngModel)]="form.newPassword" name="newPassword"  class="form-control "  placeholder="********" required>
+          </div>
+          <div class="p-field">
+            <label class="text-label" for="confirm-password">Conferma password (almeno 8 caratteri)</label>
+            <input type="password" minlength="8"   pInputText [(ngModel)]="form.confirmPassword" name="confirmPassword"  class="form-control"  placeholder="********" required>
+          </div>
+          @if (resetPasswordForm.submitted && isPasswordDifferent) {
+            <div class="alert alert-danger" role="alert">
+              nuova password e conferma password non combaciano
+            </div>
+          }
+          <div class="modal-footer">
+            <button pButton pRipple data-bs-dismiss="modal" label="Annulla" id="btn-annulla" class="p-button-rounded"></button>
+            <button type="submit" pButton pRipple label="Conferma" [disabled]="changePasswordForm.invalid" id="btn-confirmChange" class="p-button-rounded"></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODAL RESET PASSWORD-->
+<div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordlLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Reset password</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #resetPasswordForm="ngForm" class="form-group" (ngSubmit)="onResetPassword(resetPasswordForm)">
+          <div class="p-field">
+            <label class="text-label" for="new-password">Nuova password (almeno 8 caratteri)</label>
+            <input type="password" minlength="8"  pInputText [(ngModel)]="form.newPassword" name="newPassword"  class="form-control "  placeholder="********" required>
+          </div>
+          <div class="p-field">
+            <label class="text-label" for="confirm-password">Conferma password (almeno 8 caratteri)</label>
+            <input type="password" minlength="8"   pInputText [(ngModel)]="form.confirmPassword" name="confirmPassword"  class="form-control"  placeholder="********" required>
+          </div>
+          @if (resetPasswordForm.submitted && isPasswordDifferent) {
+            <div class="alert alert-danger" role="alert">
+              nuova password e conferma password non combaciano
+            </div>
+          }
+          <div class="modal-footer">
+            <button pButton pRipple data-bs-dismiss="modal" label="Annulla" id="btn-annulla" class="p-button-rounded"></button>
+            <button type="submit" pButton pRipple label="Conferma" [disabled]="resetPasswordForm.invalid" id="btn-confirmReset" class="p-button-rounded"></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Delete profile-->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <i class="pi pi-exclamation-triangle"></i>
+        <div class="text-delete-modal">
+          <h1>ATTENZIONE!</h1>
+          <h3>Stai per eliminare un account, questa operazione è irreversibile, sei sicuro di voler procedere?</h3>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button pButton pRipple data-bs-dismiss="modal" label="Annulla" id="btn-annulla" class="p-button-rounded"></button>
+        <button pButton pRipple data-bs-dismiss="modal" label="Elimina" id="btn-delete" (click)="deleteUser(+user.id)" class="p-button-rounded p-button-danger"></button>
+      </div>
+    </div>
+  </div>
+</div>
+<!---->
+
+<!-- Modal Confirm -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <i class="pi pi-check"></i>
+        <div class="text-confirm-modal">
+          <h3>{{messageConfirm}}</h3>
+        </div>
+      </div>
+      <div class="modal-footer" id="footer-confirm">
+        <button (click)="refresh()" pButton pRipple data-bs-dismiss="modal" label="Ok" class="p-button-rounded"></button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END Modal Confirm -->
+
+<!-- Modal error -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <i class="pi pi-exclamation-circle"></i>
+        <div class="text-confirm-modal">
+          <h3>{{messageError}}</h3>
+        </div>
+      </div>
+      <div class="modal-footer" id="footer-confirm">
+        <button (click)="refresh()" pButton pRipple data-bs-dismiss="modal" label="Ok" class="p-button-rounded"></button>
+      </div>
+    </div>
+  </div>
+</div>

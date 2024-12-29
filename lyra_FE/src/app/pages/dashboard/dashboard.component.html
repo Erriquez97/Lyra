@@ -1,0 +1,61 @@
+<p-sidebar [(visible)]="visibleSidebar1">
+    <div class="side-buttons">
+      <button pButton pRipple type="button" routerLink="/dashboard" (click)="visibleSidebar1 = false" label="DASHBOARD" class="p-button-raised"></button>
+      <button pButton pRipple type="button" routerLink="/users" (click)="visibleSidebar1 = false" label="UTENTI" class="p-button-raised"></button>
+      <button pButton pRipple type="button"  routerLink="/projects"  (click)="visibleSidebar1 = false" label="PROGETTI" class="p-button-raised"></button>
+      <button pButton pRipple type="button"  routerLink="/bugTracking" (click)="visibleSidebar1 = false; openAllReportsFunction();" label="TICKETS" class="p-button-raised"></button>
+      <button pButton pRipple id="button-logout" type="button" (click)="visibleSidebar1 = false; signOut();" label="LOGOUT" class="p-button-raised"></button>
+    </div>
+  </p-sidebar>
+  <p-toolbar id="toolbar">
+    <div class="p-toolbar-group-left">
+      <p-button type="button" (click)="visibleSidebar1 = true" id="bottone-linee" icon="pi pi-bars"></p-button>
+      <span id="name-page">DASHBOARD</span>
+    </div>
+    <div class="p-toolbar-group-right">
+      <div id="last-update">Ultimo aggiornamento:  {{currentDate}}</div>
+    </div>
+  </p-toolbar>
+
+  <div class="p-fluid">
+    <div class="statistics">
+      <div class="first-part">
+        <div (click)="openAllReportsFunction();" class="number-tickets-reported">
+          <div class="image image-tickets-reported"></div>
+          <h4>TICKETS SEGNALATI</h4>
+          <h1>{{totalReports}}</h1>
+        </div>
+        <div (click)="openReportsFunction();" class="number-tickets-solved">
+          <div class="image image-tickets-solved"></div>
+          <h4>TICKETS APERTI</h4>
+          <h1>{{openReports}}</h1>
+        </div>
+      </div>
+      <div class="second-part">
+        <div routerLink="/projects" class="number-projects">
+          <div class="image image-projects"></div>
+          <h4>PROGETTI ATTIVI</h4>
+          <h1>{{totalProjects}}</h1>
+        </div>
+        <div routerLink="/users" class="number-users">
+          <div class="image image-users"></div>
+          <h4>NUMERO UTENTI</h4>
+          <h1>{{totalUsers}}</h1>
+        </div>
+      </div>
+    </div>
+    <div class="charts">
+      <div class="card">
+        @if (last7days) {
+          <div class="chart">
+            <p-chart type="bar"height="100%" width="100%" [data]="last7days" [options]="options"></p-chart>
+          </div>
+        }
+      </div>
+      <div class="card">
+        <div class="chart">
+          <p-chart type="bar" height="100%" width="100%"[data]="basicData"></p-chart>
+        </div>
+      </div>
+    </div>
+  </div>

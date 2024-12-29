@@ -1,0 +1,137 @@
+.p-fluid{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    align-content: space-around;
+    width: 100%;
+    height: 130vh;
+    color: #FAFAFA;
+    padding: 10px;
+    background-color: #303236;
+
+    .number-bugs{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-direction: row;
+        align-content: space-around;
+        width: 100%;
+        height: 15%;
+
+        .number-bugs-reported{
+            display: flex;
+            justify-content:space-around;
+            align-items: center;
+            flex-direction: row;
+            color: #FAFAFA;
+            height: 100%;
+            width: 30%;
+            border-style: solid;
+            border: 1px solid;
+            background-color: #2B2B2B;
+        
+            .image-bug-reported{
+                height: 90%;
+                width: 33%;
+                background-image: url(../../assets/Images/allerta-rosso.png);
+                background-repeat: no-repeat;
+                background-size: contain;
+                background-position: center;
+            }
+        }
+
+        .number-bugs-solved{
+        display: flex;
+        justify-content:space-around;
+        align-items: center;
+        flex-direction: row;
+        color: #FAFAFA;
+        height: 100%;
+        width: 30%;
+        border: 1px solid;
+        background-color: #2B2B2B;
+
+            .image-bug-solved{
+                height: 90%;
+                width: 33%;
+                background-image: url(../../assets/Images/allerta-verde.png);
+                background-repeat: no-repeat;
+                background-size: contain;
+                background-position: center;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1000px){
+
+    .p-fluid{
+         height: 100vh;
+
+        #name-page{
+            font-size: 3vw;
+        } 
+
+        .number-bugs{
+            justify-content: center;
+            flex-direction: column;
+            height: 30%;
+
+            .number-bugs-reported{
+                margin-bottom: 5%;
+                flex-wrap: wrap;
+                justify-content:center;
+                flex-direction: column;
+                height: 40%;
+                width: 40%;
+                border: 3px solid;
+            }
+            .number-bugs-solved{
+                justify-content: center;
+                flex-wrap: wrap;
+                flex-direction: column;
+                height: 40%;
+                width: 40%;
+                border: 3px solid;
+            }
+        }
+    }
+}
+@media screen and (max-width: 645px){
+    ::ng-deep .p-toolbar-group-left{
+        width: 70%;
+    }
+    #name-page{
+        margin-left: 10%;
+        font-size: 6vw;
+    } 
+    .p-fluid{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+        height: 100%;
+
+        .number-bugs{
+            height: 30vh;
+            margin-bottom: 10%;
+        
+            .number-bugs-reported{
+                margin-bottom: 5%;
+                justify-content:center;
+                flex-direction: column;
+                height: 40%;
+                width: 100%;
+                border: 1px solid;
+            }
+            .number-bugs-solved{
+                justify-content: center;
+                flex-direction: column;
+                height: 40%;
+                width: 100%;
+                border: 1px solid;
+            }
+        }
+    }
+}

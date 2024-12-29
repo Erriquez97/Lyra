@@ -1,0 +1,8 @@
+{
+    "EMAIL":"Email",
+    "TITLE":"Where did you find the problem?",
+    "DESCRIPTION":"Tell us more about it",
+    "CATEGORY":"Choose one category",
+    "LABELIMAGE":"Do you have a screenshot?",
+    "SUBMIT":"SEND TICKET"
+}

@@ -1,0 +1,368 @@
+@import "../../common-style/bars.scss";
+
+::ng-deep html {
+    height: 100%;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    background-color: #303236;
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: 'CaviarDreams', 'arial', sans-serif;
+    text-align: justify;
+}
+
+/* TOOLBAR*/
+::ng-deep .p-toolbar{
+    background-color: #2B2B2B;
+    border-style: none; 
+    width: 100%;
+    height: 10vh;
+    color: #FAFAFA;
+    font-family: 'CaviarDreams', 'arial', sans-serif;
+    }
+
+::ng-deep .p-toolbar-group-left{
+    width: 20%;
+}
+
+/*END TOOLBAR*/
+
+.p-fluid{
+    width: 100%;
+    height: 100%;
+    color: #FAFAFA;
+    padding: 10px;
+    background-color: #303236;
+
+    .selection-project{
+        width: 20%;
+        margin-top: 2%;
+        margin-bottom: 2%;
+
+    }
+}
+
+:host ::ng-deep{
+    .p-dropdown{
+      border-radius: 10px;
+    }
+    .p-dropdown-label{
+        font-family: 'CaviarDreams', 'arial', sans-serif;
+        letter-spacing: 1px;
+        
+    }
+}
+
+#dropDown-status{
+    font-weight: 600;
+}
+
+/*SIDEBAR*/
+:host ::ng-deep {
+    .p-sidebar{
+        background-image: linear-gradient(216deg, rgba(77, 77, 77,0.05) 0%, rgba(77, 77, 77,0.05) 25%,rgba(42, 42, 42,0.05) 25%, rgba(42, 42, 42,0.05) 38%,rgba(223, 223, 223,0.05) 38%, rgba(223, 223, 223,0.05) 75%,rgba(36, 36, 36,0.05) 75%, rgba(36, 36, 36,0.05) 100%),linear-gradient(44deg, rgba(128, 128, 128,0.05) 0%, rgba(128, 128, 128,0.05) 34%,rgba(212, 212, 212,0.05) 34%, rgba(212, 212, 212,0.05) 57%,rgba(25, 25, 25,0.05) 57%, rgba(25, 25, 25,0.05) 89%,rgba(135, 135, 135,0.05) 89%, rgba(135, 135, 135,0.05) 100%),linear-gradient(241deg, rgba(55, 55, 55,0.05) 0%, rgba(55, 55, 55,0.05) 14%,rgba(209, 209, 209,0.05) 14%, rgba(209, 209, 209,0.05) 60%,rgba(245, 245, 245,0.05) 60%, rgba(245, 245, 245,0.05) 69%,rgba(164, 164, 164,0.05) 69%, rgba(164, 164, 164,0.05) 100%),linear-gradient(249deg, rgba(248, 248, 248,0.05) 0%, rgba(248, 248, 248,0.05) 32%,rgba(148, 148, 148,0.05) 32%, rgba(148, 148, 148,0.05) 35%,rgba(202, 202, 202,0.05) 35%, rgba(202, 202, 202,0.05) 51%,rgba(181, 181, 181,0.05) 51%, rgba(181, 181, 181,0.05) 100%),linear-gradient(92deg, hsl(214,0%,11%),hsl(214,0%,11%));
+        color: #FAFAFA;
+        height: 100vh;
+        width: 320px;
+    }
+    .p-sidebar-content {
+        height: 100vh;
+    }
+}
+
+
+:host ::ng-deep {
+    .p-datatable-header  {
+        margin-top: 1%;
+        text-align: center;
+        background-color:#2B2B2B ;
+        color: #FAFAFA;
+        border-width: 1px 1px 1px 1px;
+        font-family: 'CaviarDreams', 'arial', sans-serif;
+        letter-spacing: 1px;
+    } 
+    .p-datatable .p-datatable-thead > tr > th {
+        text-align: center;
+        border-width: 0 1px 1px 1px;
+        color: #FAFAFA;
+        background-color: #2B2B2B;
+        font-family: 'CaviarDreams', 'arial', sans-serif;
+        letter-spacing: 1px;
+      }
+      .p-column-title{
+          display: none;
+      }   
+      .p-datatable .p-datatable-tbody > tr >td {
+        background: #2B2B2B;
+        color: #FAFAFA;
+        transition: box-shadow 0.2s;
+        outline-color: #605e5c;
+        text-align: center;
+        border-width: 1px 1px 1px 1px;
+    }
+    .p-paginator{
+        background-color: #2B2B2B;
+        border-width: 1px 0 1px 0;
+    }
+}
+
+.bottone-scelta{
+    width: 20%;
+    padding: 1%;
+}
+
+/* MODAL ADD REPORT*/
+
+.modal-content{
+    text-align: center;
+    background-color: #2B2B2B;
+    font-family: 'CaviarDreams', 'arial', sans-serif;
+    letter-spacing: 1px;
+    color: #FAFAFA;
+
+    .form-group{
+        font-family: 'CaviarDreams', 'arial', sans-serif;
+        color: #FAFAFA;
+        letter-spacing: 1px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+        height:100% ;
+    
+        .p-field{
+            text-align: center;
+            width: 70%;
+            margin-bottom: 5%;
+            
+            .text-label{
+                top: 5%;
+                color: #FAFAFA;
+                font-size:1.2vw;
+            }
+
+            #description{
+                resize: none;
+            }
+
+            .form-control{
+                background-color:#FAFAFA;
+                padding: 2%;
+                width: 100%;
+                border-left: 0;
+                border-top: 0;
+                border-right: 0;
+                border-bottom: 1px solid #999;
+                border-radius: 10px;
+                text-align: center;
+            
+                .form-control:empty{
+                    font-family: 'CaviarDreams', 'arial', sans-serif;
+                    font-size:1.2vw;
+                    font-weight: 600;
+                    text-align: center;
+                    color: #2B2B2B;
+                }
+            }
+
+            ::ng-deep .p-dropdown{
+                width: 100%;
+                border-style: none;
+            }
+
+            ::ng-deep .p-dropdown-label{
+                text-align: center;
+                padding: 0 0 0 0  ;
+                font-family: 'CaviarDreams', 'arial', sans-serif;
+                letter-spacing: 1px;
+               
+            }
+        }
+        .input-group{
+            width: 70%;
+
+            .text-form{
+                width: 100%;
+                padding: 3%; 
+                text-align: center;
+                font-size:1.2vw; 
+                color: #FAFAFA;  
+                font-family: 'CaviarDreams', 'arial', sans-serif;
+                letter-spacing: 1px;
+            }
+            #file{
+                font-family: 'CaviarDreams', 'arial', sans-serif;
+                width: 70%;
+                border-radius: 10px;
+                letter-spacing: 1px;
+            }
+        }
+        .modal-footer{
+            width: 100%;
+        }
+    }
+}
+
+/* END MODAL ADD REPORT*/
+
+/* Confirm modal*/
+.pi-check{
+    padding-bottom: 10px;
+    color: green;
+    font-size: 50px;
+}
+/*end confirm modal*/
+
+.pi-exclamation-circle{
+    padding-bottom: 10px;
+    color: red;
+    font-size: 50px;
+}
+@media screen and (max-width: 1000px){
+
+    ::ng-deep .p-toolbar-group-left{
+        width: 35%;
+    }
+    #name-page{
+        font-size: 3vw;
+    } 
+
+    .bottone-scelta{
+        width: 40%;
+    }
+    
+    /* MODAL ADD REPORT */
+
+    .modal-content{
+
+        .form-group{
+
+            .p-field{
+                
+                .text-label{
+                    font-size:1.6vw;
+                }
+        
+                .form-control{
+                    padding: 3%;
+                
+                    .form-control:empty{
+                        font-size:2vw;
+                    }
+                }
+            }
+            .input-group{
+
+                .text-form{
+                    font-size:1.6vw; 
+                }
+            }
+        }
+    }    
+}
+
+@media screen and (max-width: 645px){
+    ::ng-deep .p-toolbar-group-left{
+        width: 80%;
+    }
+    #name-page{
+        margin-left: 10%;
+        font-size: 6vw;
+    } 
+
+    .bottone-scelta{
+        width: 80%;
+        padding: 2%;
+    }
+
+    .table-reports{
+        width: 100%;
+        height: 35%;
+    }
+
+    /* MODAL ADD REPORT*/
+
+    .modal-content{
+
+        .form-group{
+
+            .p-field{
+                width: 100%;
+                
+                .text-label{
+                    font-size:3vw;
+                }
+
+                .form-control{
+                    padding: 3%;
+                
+                    .form-control:empty{
+                        font-size:4vw;
+                    }
+                }
+            }
+            .input-group{
+                width: 100%;
+
+                .text-form{
+                    font-size: 3vw; 
+                }
+
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 350px){
+    :host ::ng-deep {
+        .p-sidebar{
+            width: 80vw;
+        }
+    }
+
+    .p-button-raised{
+        font-size: 5vw;
+    }
+}
+
+
+
+
+
+@media screen and (max-width: 40rem) {
+    :host ::ng-deep {
+        .p-datatable {
+            &.p-datatable-responsive-demo {
+                .p-datatable-thead > tr > th,
+                .p-datatable-tfoot > tr > td {
+                    display: none !important;
+                }
+
+                .p-datatable-tbody > tr > td {
+                    text-align: left;
+                    display: block;
+                    width: 100%;
+                    float: left;
+                    clear: left;
+                    border: 0 none;
+
+                    .p-column-title {
+                        padding: .4rem;
+                        min-width: 30%;
+                        display: inline-block;
+                        margin: -.4em 1em -.4em -.4rem;
+                        font-weight: bold;
+                    }
+
+                    &:last-child {
+                        border-bottom: 1px solid var(--surface-d);
+                    }
+                }
+            }
+        }
+    }
+}

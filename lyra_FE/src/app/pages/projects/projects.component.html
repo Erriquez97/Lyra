@@ -1,0 +1,128 @@
+<p-sidebar [(visible)]="visibleSidebar1">
+    <h1 id="prova">a</h1>
+    <div class="side-buttons">
+      <button pButton pRipple type="button" (click)="visibleSidebar1 = false; openDashboard();" label="DASHBOARD" class="p-button-raised"></button>
+      @if (isAdmin) {
+        <button  pButton pRipple type="button" routerLink="/users" (click)="visibleSidebar1 = false" label="UTENTI" class="p-button-raised"></button>
+      }
+      @if (isManager) {
+        <button  pButton pRipple type="button" (click)="visibleSidebar1 = false; openProfile();" label="PROFILO" class="p-button-raised"></button>
+      }
+      <button pButton pRipple type="button"  routerLink="/projects"  (click)="visibleSidebar1 = false" label="PROGETTI" class="p-button-raised"></button>
+      <button pButton pRipple type="button" (click)="visibleSidebar1 = false; openAllReportsFunction();" label="TICKETS" class="p-button-raised"></button>
+      <button pButton pRipple id="button-logout" type="button" (click)="visibleSidebar1 = false; signOut();" label="LOGOUT" class="p-button-raised"></button>
+    </div>
+  </p-sidebar>
+  <p-toolbar id="toolbar">
+    <div class="p-toolbar-group-left">
+      <p-button type="button" (click)="visibleSidebar1 = true" id="bottone-linee" icon="pi pi-bars"></p-button>
+      <div id="name-page">Progetti</div>
+    </div>
+  </p-toolbar>
+
+  <div class="p-fluid">
+    <button id="openModalButton" [hidden]="true">Open Modal</button>
+    <div class="projects-table">
+      <p-table [columns]="colsProjects"  [value]="projects" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedProject" (onRowSelect)="selected()" styleClass="p-datatable-responsive-demo">
+        <ng-template pTemplate="caption">
+          Progetti
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            @for (col of colsProjects; track col) {
+              <th>
+                {{col.header}}
+              </th>
+            }
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns" >
+          <tr [pSelectableRow]="rowData">
+            @for (col of colsProjects; track col) {
+              <td>
+                <span class="p-column-title">{{col.header}}</span>
+                {{rowData[col.field]}}
+              </td>
+            }
+          </tr>
+        </ng-template>
+        @if (isAdmin) {
+          <ng-template pTemplate="paginatorleft">
+            <p-button data-bs-toggle="modal" data-bs-target="#addProjectModal" type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+          </ng-template>
+        }
+      </p-table>
+    </div>
+
+  </div>
+  <!-- MODAL ADD PROJECT-->
+  <div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectlLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Nuovo progetto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form #addProjectForm="ngForm"  class="form-group" (ngSubmit)="onAddProject(addProjectForm)">
+            <div class="p-field">
+              <label class="text-label" for="old-password">Codice:</label>
+              <input type="text" maxlength="4" pInputText ngModel name="code" aria-describedby="username1-help" class="form-control" id="code" placeholder="Lyra" required>
+            </div>
+            <div class="p-field">
+              <label class="text-label" for="name">Nome:</label>
+              <input type="text" pInputText ngModel name="name"  class="form-control " id="name" placeholder="International" required>
+            </div>
+            <div class="p-field">
+              <label class="text-label" for="supervisor">Responsabile:</label>
+              <input type="text"  pInputText ngModel name="supervisor"  class="form-control" id="supervisor" placeholder="Mario Rossi" required>
+            </div>
+            <div class="p-field">
+              <label class="text-label" for="token">Token:</label>
+              <input type="text" maxlength="10" pattern="[a-zA-Z0-9-]+" pInputText ngModel name="token"  class="form-control" id="token" placeholder="token" required>
+            </div>
+            <div class="modal-footer">
+              <button pButton pRipple data-bs-dismiss="modal" (click)="reset(addProjectForm)" label="Annulla" id="btn-annulla" class="p-button-rounded"></button>
+              <button  id="btn-confirm" type="submit" pButton pRipple label="Conferma" [disabled]="addProjectForm.invalid" class="p-button-rounded"></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Confirm -->
+  <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <i class="pi pi-check"></i>
+          <div class="text-confirm-modal">
+            <h3>Progetto inserito con successo</h3>
+          </div>
+        </div>
+        <div class="modal-footer" id="footer-confirm">
+          <button (click)="refresh()" pButton pRipple data-bs-dismiss="modal" label="Ok" class="p-button-rounded"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END Modal Confirm -->
+
+  <!-- Modal error -->
+  <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <i class="pi pi-exclamation-circle"></i>
+          <div class="text-confirm-modal">
+            <h3>Errore, progetto non inserito, riprova più tardi</h3>
+          </div>
+        </div>
+        <div class="modal-footer" id="footer-confirm">
+          <button (click)="refresh()" pButton pRipple data-bs-dismiss="modal" label="Ok" class="p-button-rounded"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <router-outlet></router-outlet>

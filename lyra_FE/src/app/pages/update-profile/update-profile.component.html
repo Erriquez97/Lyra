@@ -1,0 +1,100 @@
+<p-sidebar [(visible)]="visibleSidebar1">
+    <h1 id="prova">a</h1>
+    <div class="side-buttons">
+      <button pButton pRipple type="button"(click)="visibleSidebar1 = false; openDashboard();" label="DASHBOARD" class="p-button-raised"></button>
+      @if (isAdmin) {
+        <button  pButton pRipple type="button" routerLink="/users" (click)="visibleSidebar1 = false" label="UTENTI" class="p-button-raised"></button>
+      }
+      @if (isManager) {
+        <button  pButton pRipple type="button" (click)="visibleSidebar1 = false; openProfile()" label="PROFILO" class="p-button-raised"></button>
+      }
+      <button pButton pRipple type="button"  routerLink="/projects"  (click)="visibleSidebar1 = false" label="PROGETTI" class="p-button-raised"></button>
+      <button pButton pRipple type="button" (click)="visibleSidebar1 = false; openAllReportsFunction();" label="TICKETS" class="p-button-raised"></button>
+      <button pButton pRipple id="button-logout" type="button" (click)="visibleSidebar1 = false; signOut();" label="LOGOUT" class="p-button-raised"></button>
+    </div>
+  </p-sidebar>
+  <p-toolbar id="toolbar">
+    <div class="p-toolbar-group-left">
+      <p-button type="button" (click)="visibleSidebar1 = true" id="bottone-linee" icon="pi pi-bars"></p-button>
+      <div id="name-page">PROFILO-{{user.username}}</div>
+    </div>
+  </p-toolbar>
+
+  <div class="p-fluid">
+    <button id="openModalButton" [hidden]="true">Open Modal</button>
+    <div class="user-profile">
+      <div class="image-users"></div>
+      <h3 id="name-user"> #{{user.id}} {{user.username}}</h3>
+    </div>
+    <div class="user-description">
+      <form #updateUserForm="ngForm" class="form-group">
+        <div class="section">
+          <div class="introduction">
+            <i class="pi pi-id-card"></i>
+            <h2 class="section-text">Bio</h2>
+          </div>
+          <textarea type="text" rows="5" ngModel="{{user.bio}}" name="bio" class="section-answer" id="bio-user" pInputTextarea></textarea>
+        </div>
+        <!-- <div class="section">
+        <div class="introduction">
+          <i class="pi pi-list"></i>
+          <h2 class="section-text">Progetti assegnati</h2>
+        </div>
+        <input type="text"  pInputText ngModel="{{user?.projectsAssigned}}" name="projectsAssigned" class="form-control" id="given-projects">
+      </div> -->
+      <div class="section">
+        <div class="introduction">
+          <i class="pi pi-calendar"></i>
+          <h2 class="section-text">Data registrazione</h2>
+        </div>
+        <input type="text" pInputText ngModel="{{user.registrationDate}}" name="registrationDate" class="form-control" id="date-registration-user">
+      </div>
+      <div class="section">
+        <div class="introduction">
+          <i class="pi pi-envelope"></i>
+          <h2 class="section-text">Email</h2>
+        </div>
+        <input type="email" pInputText ngModel="{{user.email}}" name="email"  class="form-control" id="email">
+      </div>
+    </form>
+    <div class="update-part">
+      <button pButton pRipple  type="button" (click)="updateUser(updateUserForm.value)" label="Aggiorna profilo" class="p-button-rounded update-button"></button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Confirm -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <i class="pi pi-check"></i>
+        <div class="text-confirm-modal">
+          <h3>Profilo aggiornato con successo</h3>
+        </div>
+      </div>
+      <div class="modal-footer" id="footer-confirm">
+        <button (click)="refresh()" pButton pRipple data-bs-dismiss="modal" label="Ok" class="p-button-rounded"></button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END Modal Confirm -->
+
+<!-- Modal error -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <i class="pi pi-exclamation-circle"></i>
+        <div class="text-confirm-modal">
+          <h3>Errore, profilo non aggiornato con successo, riprova più tardi</h3>
+        </div>
+      </div>
+      <div class="modal-footer" id="footer-confirm">
+        <button (click)="refresh()" pButton pRipple data-bs-dismiss="modal" label="Ok" class="p-button-rounded"></button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END Modal error -->

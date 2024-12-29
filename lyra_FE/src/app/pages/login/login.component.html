@@ -1,0 +1,25 @@
+<div class="p-fluid">
+    <div class="form-all">
+        <form [formGroup]="loginForm" (ngSubmit)="login_form.form.valid && onSubmit()" #login_form="ngForm" novalidate
+            class="form-group">
+            <div class="p-field">
+                <label class="text-label" for="email">Email:</label>
+                <input type="email" pInputText formControlName="email" class="form-control" id="email"
+                    placeholder="name@email.com">
+            </div>
+            <div class="p-field">
+                <label class="text-label" for="password">Password:</label>
+                <input type="password" pInputText name="password" formControlName="password"
+                    class="form-control form-control-password" id="password" placeholder="********">
+            </div>
+            <button id="submit-button" [disabled]="login_form.form.invalid" pButton pRipple type="submit" label="LOGIN"
+                class="p-button-rounded"></button>
+            @if (login_form.submitted && isLoginFailed) {
+            <div class="alert alert-danger" role="alert">
+                Username o password non validi
+            </div>
+            }
+        </form>
+    </div>
+    <div class="image-users"></div>
+</div>
