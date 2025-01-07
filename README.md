@@ -1,27 +1,59 @@
-# LyraFE
+# Ticket Management Platform
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.11.
+## Overview
 
-## Development server
+This project is a web platform designed for users to submit tickets related to various purposes such as requesting information, reporting issues, or any other queries. The platform differentiates between two types of entities: Admin and Ticket Manager, each with distinct roles and responsibilities.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Features
 
-## Code scaffolding
+### Admin Features:
+- **Create Projects**: Admins can create new projects for users to submit tickets.
+- **Manage Users**: Admins have the ability to create, edit, and manage users.
+- **View Reports and Graphs**: Admins can access various reports and graphical representations of ticket statuses, including opened and resolved tickets.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Ticket Manager Features:
+- **View Tickets**: Ticket Managers can view all the tickets assigned to them.
+- **Resolve Tickets**: Ticket Managers can solve tickets and update the status to indicate resolution.
 
-## Build
+## Technology Stack
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Frontend:
+- **Angular**: The frontend is built using Angular, providing a dynamic and responsive user interface.
 
-## Running unit tests
+### Backend:
+- **Spring Boot**: The backend is developed with Spring Boot, ensuring robust and scalable server-side operations.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Database:
+- **MySQL**: Used to store user-related information.
+- **Elasticsearch**: Utilized for storing and querying report information efficiently.
 
-## Running end-to-end tests
+## Prerequisites
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- **Docker**: Ensure Docker is installed on your system.
+- **Docker Compose**: Make sure Docker Compose is installed and properly configured.
 
-## Further help
+## Installation
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Erriquez97/Lyra.git
+   cd Lyra
+   ```
+
+2. Run the application using Docker Compose:
+   ```bash
+   docker-compose up
+   ```
+
+   This command will start all the necessary services, including the Angular frontend, Spring Boot backend, MySQL database, and Elasticsearch.
+
+## Usage
+
+### Accessing the Platform:
+- Once the services are running, open a web browser and navigate to `http://localhost:4200` to access the frontend.
+
+### Admin Login:
+- Admins can log in to manage projects, users, and view detailed reports on ticket activities.
+
+### Ticket Manager Login:
+- Ticket Managers can log in to view and resolve tickets assigned to them.
