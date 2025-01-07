@@ -42,7 +42,7 @@ This project is a web platform designed for users to submit tickets related to v
 
 2. Run the application using Docker Compose:
    ```bash
-   docker-compose up
+   docker compose up
    ```
 
    This command will start all the necessary services, including the Angular frontend, Spring Boot backend, MySQL database, and Elasticsearch.
